@@ -3,14 +3,14 @@ from py3xui import Inbound
 
 class XUIClientInbound(XUIClientBase):
     
-    async def get_all_inbounds(self) -> list[Inbound]:
+    async def get_all_inbounds(self) -> list[Inbound] | None:
         await self.init()
         try:
             return await self.client.inbound.get_list()
         
         except Exception as e:
             self.logger.error(f"Ошибка при получении подключений: {e}", exc_info=True)
-            return []
+            return None
 
     async def get_inbound_by_id(self, inbound_id: int) -> Inbound | None:
         await self.init()
@@ -21,7 +21,7 @@ class XUIClientInbound(XUIClientBase):
             self.logger.error(f"Ошибка при получении inbound c ID {inbound_id}: {e}", exc_info=True)
             return None
 
-    async def add_inbound(self, inbound: Inbound) -> bool:
+    async def add(self, inbound: Inbound) -> bool:
         await self.init()
         try:
             await self.client.inbound.add(inbound=inbound)
@@ -31,7 +31,7 @@ class XUIClientInbound(XUIClientBase):
             self.logger.error(f"Ошибка при добавлении inbound: {e}", exc_info=True)
             return False
 
-    async def delete_inbound(self, inbound_id: int) -> bool:
+    async def delete(self, inbound_id: int) -> bool:
         await self.init()
         try:
             await self.client.inbound.delete(inbound_id=inbound_id)
@@ -41,7 +41,7 @@ class XUIClientInbound(XUIClientBase):
             self.logger.error(f"Ошибка при удалении inbound с ID {inbound_id}: {e}", exc_info=True)
             return False
         
-    async def update_inbound(self, inbound_id: int, inbound: Inbound) -> bool:
+    async def update(self, inbound_id: int, inbound: Inbound) -> bool:
         await self.init()
         try:
             await self.client.inbound.update(inbound_id=inbound_id, inbound=inbound)
