@@ -6,6 +6,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "alembic",
+    "asyncpg>=0.30.0",
+    "fastapi[standard]>=0.116.1",
+    "psycopg2>=2.9.10",
     "py3xui>=0.5.1",
     "python-dotenv>=1.1.1",
     "sqlalchemy>=2.0.41",
