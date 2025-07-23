@@ -3,7 +3,7 @@ from py3xui import Client
 
 
 class XUIClient(XUIClientBase):
-
+    
     async def get_by_email(self, email: str) -> Client | None:
         await self.init()
         try:
