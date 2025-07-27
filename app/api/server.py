@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 
 from app.core.database import get_db
-from app.schemas.server import ServerAdd, ServerReponse
+from app.schemas.server import ServerAdd, ServerReponse, ServerUpdate
 from app.crud.server import ServerCRUD
 
 router = APIRouter(prefix="/servers", tags=["Сервера"])
@@ -38,3 +38,11 @@ async def add(server_data: ServerAdd, db: AsyncSession = Depends(get_db)):
     server = await server_crud.add_server(db, server_data)
     return server
     
+@router.put("/update", response_model=ServerReponse)
+async def update(server_uuid: UUID, update_data: ServerUpdate, db: AsyncSession = Depends(get_db)):
+    updated_server = await server_crud.update_server(db, server_uuid, update_data)
+    
+    if not updated_server:
+        raise HTTPException(status_code=404, detail="Server not found")
+    
+    return updated_server

@@ -13,6 +13,14 @@ class ServerAdd(Server):
     is_active: Optional[bool] = Field(True, description="Активен ли сервер по умолчанию")
     uuid: Optional[UUID] = Field(default_factory=uuid4, description="Уникальный идентификатор сервера")
 
+class ServerUpdate(BaseModel):
+    host: Optional[str] = Field(None, description="URL для подключения к панели")
+    username: Optional[str] = Field(None, description="USERNAME панели")
+    password: Optional[str] = Field(None, description="Пароль панели")
+    label: Optional[str] = Field(None, description="Название сервера или метка")
+    country: Optional[str] = Field(None, description="Страна или регион")
+    is_active: Optional[bool] = Field(None, description="Активен ли сервер")
+
 
 class ServerReponse(BaseModel):
     uuid: UUID = Field(..., description="Уникальный идентификатор сервера")
