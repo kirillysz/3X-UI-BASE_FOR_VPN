@@ -2,7 +2,9 @@ from src.xui.base import XUIClientBase
 from py3xui import Inbound
 
 class XUIClientInbound(XUIClientBase):
-    
+    def __init__(self, host, username, password, use_tls_verify = False, custom_certificate_path = None):
+        super().__init__(host, username, password, use_tls_verify, custom_certificate_path)
+
     async def get_all_inbounds(self) -> list[Inbound] | None:
         await self.init()
         try:
@@ -68,4 +70,17 @@ class XUIClientInbound(XUIClientBase):
         except Exception as e:
             self.logger.error(f"Ошибки при сбросе статистик с inbound с ID {inbound_id}: {e}", exc_info=True)
 
-    
+    async def get_connection_string(self, inbound: Inbound, user_uuid: str, user_email: int) -> str:
+        await self.init()
+        public_key = inbound.stream_settings.reality_settings.get("settings").get("publicKey")
+        website_name = inbound.stream_settings.reality_settings.get("serverNames")[0]
+        short_id = inbound.stream_settings.reality_settings.get("shortIds")[0]
+        
+        connection_string = (
+            f"vless://{user_uuid}@panel.detaflow.digital:433"
+            f"?type=tcp&security=reality&pbk={public_key}&fp=chrome"
+            f"&sni={website_name}&sid={short_id}&spx=%2F&flow=xtls-rprx-vision"
+            f"#DETAFLOW-{user_email}"
+        )
+
+        return connection_string
