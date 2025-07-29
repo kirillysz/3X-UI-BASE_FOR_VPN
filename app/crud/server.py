@@ -62,3 +62,16 @@ class ServerCRUD:
         await db.refresh(server)
 
         return ServerReponse.model_validate(server)
+    
+    @staticmethod
+    async def delete_server(db: AsyncSession, server_uuid: UUID) -> bool:
+        query = select(Server).where(Server.uuid == server_uuid)
+        result = await db.execute(query)
+        server = result.scalars().first()
+
+        if not server:
+            return False
+
+        await db.delete(server)
+        await db.commit()
+        return True

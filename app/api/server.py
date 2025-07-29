@@ -46,3 +46,12 @@ async def update(server_uuid: UUID, update_data: ServerUpdate, db: AsyncSession 
         raise HTTPException(status_code=404, detail="Server not found")
     
     return updated_server
+
+@router.delete("/delete", response_model=dict)
+async def delete(server_uuid: UUID, db: AsyncSession = Depends(get_db)):
+    is_deleted = await server_crud.delete_server(db, server_uuid)
+
+    if not is_deleted:
+        raise HTTPException(status_code=404, detail="Server not found")
+
+    return {"detail": "Server deleted successfully"}
