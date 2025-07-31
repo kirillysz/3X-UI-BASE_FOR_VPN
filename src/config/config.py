@@ -8,3 +8,4 @@ class Config:
     XUI_USERNAME = getenv("XUI_USERNAME")
     XUI_PASSWORD = getenv("XUI_PASSWORD")
 
+

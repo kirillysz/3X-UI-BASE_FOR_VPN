@@ -1,5 +1,6 @@
 from src.xui.clients import XUIClient
 from asyncio import run
+from fastapi import FastAPI
 
 import logging
 logging.basicConfig(
@@ -9,6 +10,9 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
+app = FastAPI()
+
 
 logger = logging.getLogger(__name__)
 
