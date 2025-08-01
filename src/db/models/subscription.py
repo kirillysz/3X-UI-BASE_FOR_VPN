@@ -1,37 +1,25 @@
 from __future__ import annotations
-from src.db.base import Base
-
-from typing import List,TYPE_CHECKING
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from src.db.base import Base
-from sqlalchemy.orm import Mapped,mapped_column,relationship
-from sqlalchemy import Integer,String
-
-
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Integer, String
-
-
-from sqlalchemy import UUID, Boolean, ForeignKey, Integer, String
+import uuid
+from typing import List
+from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from uuid import uuid4
-from typing import Optional
-
+from sqlalchemy.dialects.postgresql import UUID
+from src.db.base import Base
 
 class Subscription(Base):
     __tablename__ = 'subscriptions'
     
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    uuid: Mapped[UUID] = mapped_column(
-        UUID(as_uuid=True),
-        default=uuid4,
-        unique=True,
-        index=True
+    
+    uuid: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+    link: Mapped[str] = mapped_column(String(255))
+    
+    
+    users: Mapped[List["User"]] = relationship(
+        "User", 
+        back_populates="subscription",
+        cascade="all, delete-orphan",
+        passive_deletes=True
     )
-    link: Mapped[str] = mapped_column(String(255), nullable=False)
-    
-    
     
     
     

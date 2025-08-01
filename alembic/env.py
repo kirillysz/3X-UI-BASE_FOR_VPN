@@ -10,6 +10,8 @@ from src.db.base import Base
 
 from src.db.models.user import User
 from src.db.models.subscription import Subscription
+from src.db.models.payments import Payment
+from src.db.models.relationships import * 
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

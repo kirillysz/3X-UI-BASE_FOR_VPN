@@ -1,34 +1,31 @@
 from __future__ import annotations
-from src.db.base import Base
-
-from typing import List,TYPE_CHECKING
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from src.db.base import Base
-from sqlalchemy.orm import Mapped,mapped_column,relationship
-from sqlalchemy import Integer,String
-
-
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Integer, String
-
-
-from sqlalchemy import UUID, Boolean, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from uuid import uuid4
+import uuid
 from typing import Optional
+from sqlalchemy import Integer, Boolean, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.dialects.postgresql import UUID
+from src.db.base import Base
+
+
 
 
 class Payment(Base):
     __tablename__ = 'payments'
     
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    
-    uuid: Mapped[UUID] = mapped_column(
+    uuid: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
-        default=uuid4,
-        unique=True,
-        index=True
+        primary_key=True,
+        default=uuid.uuid4,
+        unique=True
     )
-
-    link: Mapped[str] = mapped_column(String(255), nullable=False)
+    payment_id_in_blockchain: Mapped[str] = mapped_column(String(255))
+    status: Mapped[str] = mapped_column(String(255))
+    
+    
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey('users.uuid'),
+        nullable=False
+    )
+    
+    user: Mapped["User"] = relationship("User", back_populates="payments")

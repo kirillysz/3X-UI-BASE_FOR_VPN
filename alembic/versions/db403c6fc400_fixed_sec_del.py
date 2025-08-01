@@ -1,8 +1,8 @@
-"""create_subscriptions
+"""fixed_sec_del
 
-Revision ID: 1d51b4f2e0a0
-Revises: 5d398deec7de
-Create Date: 2025-07-31 18:52:35.827899
+Revision ID: db403c6fc400
+Revises: e6d0ef72f679
+Create Date: 2025-08-01 20:29:02.730423
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '1d51b4f2e0a0'
-down_revision: Union[str, Sequence[str], None] = '5d398deec7de'
+revision: str = 'db403c6fc400'
+down_revision: Union[str, Sequence[str], None] = 'e6d0ef72f679'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
