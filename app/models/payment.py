@@ -13,4 +13,5 @@ class Payment(Base):
     status = Column(String, nullable=False, default="not_paid")
     user_id = Column(PGUUID(as_uuid=True), ForeignKey("users.uuid"), nullable=False)
 
+    
     user = relationship("User", back_populates="payments")

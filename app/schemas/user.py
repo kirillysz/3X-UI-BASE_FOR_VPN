@@ -2,21 +2,26 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 from uuid import UUID
 
+
 class UserBase(BaseModel):
-    telegram_id: str
+    tg_id: str
     is_active: bool = False
-    subscription: Optional[int] = None
 
-    model_config = ConfigDict(from_attributes=True)
 
-class UserResponse(UserBase):
-    uuid: UUID
+class UserCreate(UserBase):
+    pass
 
-class UserCreate(BaseModel):
-    telegram_id: str
-    subscription: Optional[int] = None
 
 class UserUpdate(BaseModel):
-    is_active: Optional[bool]
-    subscription: Optional[int]
+    tg_id: Optional[str] = None
+    is_active: Optional[bool] = None
+    subscription_id: Optional[UUID] = Field(
+        None, example="5e98744c-4910-4b3e-acb3-ba3beb93df9c"
+    )
 
+
+class UserInDB(UserBase):
+    uuid: UUID
+    subscription_id: Optional[UUID] = None
+
+    model_config = ConfigDict(from_attributes=True)
