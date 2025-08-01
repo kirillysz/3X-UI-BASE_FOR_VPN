@@ -7,16 +7,15 @@ from src.cruds.user_crud import UserCRUD
 
 router = APIRouter(prefix="/users", tags=["users"])
 
+
 @router.post("/", response_model=UserInDB)
-async def create_user(
-    user_data: UserCreate,
-    db: AsyncSession = Depends(get_db)
-):
+async def create_user(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
     crud = UserCRUD(db)
     try:
         return await crud.create_user(user_data)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 @router.get("/{user_uuid}", response_model=UserInDB)
 async def read_user(user_uuid: UUID, db: AsyncSession = Depends(get_db)):
@@ -26,17 +25,17 @@ async def read_user(user_uuid: UUID, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+
 @router.put("/{user_uuid}", response_model=UserInDB)
 async def update_user(
-    user_uuid: UUID,
-    user_data: UserUpdate,
-    db: AsyncSession = Depends(get_db)
+    user_uuid: UUID, user_data: UserUpdate, db: AsyncSession = Depends(get_db)
 ):
     crud = UserCRUD(db)
     user = await crud.update_user(user_uuid, user_data)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
+
 
 @router.delete("/{user_uuid}")
 async def delete_user(user_uuid: UUID, db: AsyncSession = Depends(get_db)):
